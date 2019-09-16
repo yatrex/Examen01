@@ -3,6 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
+/*
+
+tipoClase    Clase
+    0       Usuario
+    1       Refrigerador 
+    2       Cortinas
+    3       Termostato
+    4       DisMascota  
+    5       Irrigador
+    6       Alarma  
+    7       Lampara 
+    8       Luminaria
+
+*/
 package Controlador;
 
 import java.io.Serializable;

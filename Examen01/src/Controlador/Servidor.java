@@ -34,6 +34,16 @@ public class Servidor {
             for(int i=0;i<usuarios.size();i++){
                 usuarios.get(i).display();
             }
+           //  LinkedList<ListaObjetos> objetos;
+            for(int j=0;j<lo.length;j++){
+                for(int k=0;k<lo[j].get_Cantidad();k++){
+                    lo[j].get_Objetos().get(k);
+                }
+                
+                
+            }
+            
+            
             this.s = new ServerSocket(9000);
             System.out.println("Servidor iniciado, esperando cliente");
             cl = s.accept();//Esperando cliente a conectarse 
