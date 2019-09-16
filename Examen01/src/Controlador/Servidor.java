@@ -28,8 +28,10 @@ public class Servidor {
 
     public Servidor() {
         try {
-            this.lu = (ListaUsuarios) Servidor.ReadObjectFromFile("//ExamenListaUsuarios");
-            this.lo = (ListaObjetos[]) Servidor.ReadObjectFromFile("//ExamenListaObjetos");
+         //   this.lu = (ListaUsuarios) Servidor.ReadObjectFromFile("//ExamenListaUsuarios"); ***********************************************************************
+         //   this.lo = (ListaObjetos[]) Servidor.ReadObjectFromFile("//ExamenListaObjetos");
+            this.lu = (ListaUsuarios) Servidor.ReadObjectFromFile("ListaUsuarios");
+            this.lo = (ListaObjetos[]) Servidor.ReadObjectFromFile("ListaObjetos");
             this.usuarios = lu.get_ListaUsuarios();
             for(int i=0;i<usuarios.size();i++){
                 usuarios.get(i).display();
@@ -289,8 +291,9 @@ public class Servidor {
     public static void WriteObjectToFile(Object serObj, String filepath) {
 
         try {
-            System.out.println("jaje");
-            FileOutputStream fileOut = new FileOutputStream(System.getProperty("user.dir") + filepath);
+            System.out.println("JaJe -> user.dir: "+System.getProperty("user.dir") +" filepath: "+ filepath);
+           // FileOutputStream fileOut = new FileOutputStream(System.getProperty("user.dir") + filepath);
+           FileOutputStream fileOut = new FileOutputStream(filepath);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(serObj);
             objectOut.close();
@@ -319,7 +322,8 @@ public class Servidor {
 
         try {
 
-            FileInputStream fileIn = new FileInputStream(System.getProperty("user.dir") + filepath);
+           // FileInputStream fileIn = new FileInputStream(System.getProperty("user.dir") + filepath);
+             FileInputStream fileIn = new FileInputStream(filepath);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             Object obj = objectIn.readObject();
@@ -548,12 +552,20 @@ public class Servidor {
 
                 switch (opcion) {
                     case 1://alta
+                        System.out.println("*Alta*");
                         tipoClase = dis.readInt();
                         System.out.println(tipoClase);
 
                         if (this.administrador && tipoClase == 0) {
                             objeto = Servidor.get_objeto(tipoClase, ois);
                             this.lu.get_ListaUsuarios().add((Usuario) objeto);
+                            dos.writeBoolean(true); //bandera de usuario agregado
+                            dos.flush();
+                            System.out.println("Usuario Agregado");
+                            /************************************************************************************************************************/
+                            this.oos.writeObject(this.lu);
+                            this.oos.flush();
+                            System.out.println("numero de usuarios: "+this.lu.get_Cantidad());
                             break;
                         } else {
                             if (tipoClase == 0) {
@@ -569,6 +581,7 @@ public class Servidor {
 
                         break;
                     case 2://baja
+                        System.out.println("*Baja*");
                         tipoClase = dis.readInt();
                         System.out.println(tipoClase);
                         
@@ -601,6 +614,7 @@ public class Servidor {
 
                         break;
                     case 3://cambio
+                        System.out.println("*Cambio*");
                         tipoClase = dis.readInt();
                         System.out.println(tipoClase);
                         
@@ -634,6 +648,7 @@ public class Servidor {
                         }
                         break;
                     case 4://consulta
+                       System.out.println("*Consulta*");
                        this.consulta();
                         break;
                     case 5://salir
@@ -646,6 +661,7 @@ public class Servidor {
 
                 }
             }
+            System.out.println("*Salir*");
 
         } catch (Exception e) {
             e.printStackTrace();

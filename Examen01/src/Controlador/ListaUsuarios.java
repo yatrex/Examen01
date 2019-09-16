@@ -23,7 +23,7 @@ public class ListaUsuarios implements Serializable{
     }
     public int get_TipoClase(){return this.tipoClase;}
 
-    public int get_Cantidad(){return this.cantidad;}
+    public int get_Cantidad(){return this.usuarios.size();}
 
     public LinkedList<Usuario> get_ListaUsuarios(){return this.usuarios;}
 

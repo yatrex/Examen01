@@ -2,6 +2,10 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+*lineas:
+*152
+*466
+
  */
 package Controlador;
 
@@ -24,6 +28,8 @@ public class Cliente {
     ListaObjetos[] lo;
     ListaUsuarios lu;
     Socket cl;
+    int totalUsuarios=0;
+    int totalObjetos=0;
     /////////////////////////////datos usuario
     public String usr;
     String pwd;
@@ -99,19 +105,33 @@ public class Cliente {
     public boolean login(String Usr, String Pass) {
         try {
             Usuario u = new Usuario();
-            System.out.println("Usuario");
+            System.out.println("-Usuario-");
             this.set_usr(Usr);
-            System.out.println("Contraseña");
+            System.out.println("-Contraseña-");
             this.set_pwd(Pass);
             u.set_usr(usr);
             u.set_Password(pwd);
             oos.writeObject(u);
             administrador = dis.readBoolean();
-            System.out.println(administrador);
-            lo = (ListaObjetos[]) ois.readObject();
-            if (administrador) {
-                lu = (ListaUsuarios) ois.readObject();
+            //System.out.println("Administrador: "+administrador);
+            lo = (ListaObjetos[]) ois.readObject(); //recivimos los objetos
+            System.out.println("-Objetos recividos-");
+            totalObjetos = lo.length;
+            if(!administrador){
+                System.out.println("Bienvenido usuario");
             }
+            else{
+                lu = (ListaUsuarios) ois.readObject(); //recivimos los usuarios
+                totalUsuarios = lu.get_Cantidad();
+                System.out.println("-Usuarios recividos-"); 
+                System.out.println("Bienvenido administrador");
+
+            }
+            
+           // if (administrador) {
+           //     lu = (ListaUsuarios) ois.readObject(); //recivimos los usuarios
+           //     System.out.println("Usuarios recividos");
+           // }
 
         } catch (EOFException e) {
             System.out.println("Datos incorrectos");
@@ -128,11 +148,25 @@ public class Cliente {
         try {
             dos.writeInt(tipoClase);
             if (!this.administrador && tipoClase == 0) {
+                System.out.println("Acceso Denegado");
                 System.out.println("No tienes permisos para hacer eso");
 
             } else {
-                Object objeto = Cliente.escribir_objeto(tipoClase);
+                System.out.println("Acceso Concedido");
+                Object objeto = this.escribir_objeto(tipoClase);//   Object objeto = Cliente.escribir_objeto(tipoClase);
                 oos.writeObject(objeto);
+                
+                boolean usuarioAgregado= false;
+                usuarioAgregado = dis.readBoolean();
+                if(usuarioAgregado){
+                System.out.println("Usuario agregado correctamente");
+                
+                /******************************************************                               ***************************************************************************************************/
+                this.lu = (ListaUsuarios) ois.readObject(); //actualizamos lista de usuarios
+                System.out.println("Ahora hay: " + this.lu.get_Cantidad()+" usuarios");
+                }
+                
+                
             }
 
         } catch (Exception e) {
@@ -418,20 +452,50 @@ public class Cliente {
         }
 
     }
+    
+    public Object agregarUsuario(Usuario u) throws IOException{
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Escriba el nombre de usuario:");
+            
+            u.set_usr(br1.readLine());          
+            
+           
+            System.out.println("Escriba el nombre completo:");
+            
+            u.set_Nombre(br1.readLine());
+                
+            
+            System.out.println("Escriba la contraseña:");
+            u.set_Password(br1.readLine());//("predeterminado");//(br1.readLine());
+            System.out.println("¿Establecer como administrador?: (S/N)");
+            String sino=br1.readLine();
+            if(sino.equals("S")||sino.equals("s")){
+                u.set_Admin(true);
+                System.out.println("Usuario establecido como administrador");
+            }
+            else{
+                u.set_Admin(false);
+            }          
+            u.set_ID(this.totalUsuarios+1);            
+        return u;
+    }
 
-    public static Object escribir_objeto(int tipoClase) {
+  public Object escribir_objeto(int tipoClase) {//  public static Object escribir_objeto(int tipoClase) {
         Object objeto = null;
         try {
             switch (tipoClase) {
                 case 0://Usuario
+                    System.out.println("Añadir usuario");
                     Usuario u = new Usuario();
-                    u.set_Nombre("Nuevo nombre");
-                    u.set_usr("wholecharlygold");
-                    u.set_Password("Predeterminado");
-                    u.set_Admin(false);
-                    u.set_ID(100);
-
-                    return u;
+                    
+                   // u.set_Nombre("Nuevo nombre");
+                   // u.set_usr("wholecharlygold");
+                   // u.set_Password("Predeterminado");
+                   // u.set_Admin(false);
+                   // u.set_ID(100);
+                   
+                      return agregarUsuario(u);
+                    //return u;
                 case 1:
                     Refrigerador refri = new Refrigerador();
                     refri.set_TemCentro(5);
@@ -612,6 +676,7 @@ public class Cliente {
                     System.out.println("Ingresa tipoClase");
                     this.set_tipoClase(lapiz.nextInt());
                     this.alta();
+                   // cliente.login(nameuser,password);
                     break;
                 case 2://baja
                     System.out.println("Ingresa tipoClase");
@@ -664,8 +729,12 @@ public class Cliente {
             if (succesful_login) {
                 for (;;) {
                     System.out.println("Ingresa opcion");
-                    cliente.set_opcion_abc(lapiz.nextInt());
+                    System.out.println("1:Alta\n2:Baja\n3:Cambio\n4:Consulta\n5:Salir");
+                    cliente.set_opcion_abc(lapiz.nextInt());//leemos el siguiente entero ingresado y lo enviamos a set_opcion_abc 
                     cliente.menu();
+                  //  cliente.login(nameuser,password);
+                  //  System.out.println("ahora hay "+cliente.lu.get_Cantidad()+" usuarios"); //*************************************************************************
+                 
                 }
             }
             else{

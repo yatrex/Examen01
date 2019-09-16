@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
+import java.io.BufferedReader;
 import java.io.Externalizable;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.Serializable;
@@ -48,12 +45,13 @@ public class Usuario implements Externalizable{
     public String get_usr(){
         return this.usr;
     }
-    public void set_usr(String usr){
-       if(5<=usr.length()&&usr.length()<=20){
-              this.usr=usr;
-        }else{
-            System.out.println("Usuario debe tener entre 5 y 20 caracteres");
-        }
+    public void set_usr(String usr) throws IOException{
+       while(!(5<=usr.length()&&usr.length()<=20)){
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("El usuario debe tener mas de 5 caracteres y menos de 20");
+            usr=br1.readLine();
+       }
+       this.usr=usr;       
     }
   
      public String get_Passsword(){
@@ -102,10 +100,11 @@ public class Usuario implements Externalizable{
     
     
     public void display(){
-        System.out.println(usr);
-        System.out.println(nombre);
-        System.out.println(pwd);
-        System.out.println(tipo);
+        System.out.println("Usuario: "+usr);
+        System.out.println("Nombre: "+nombre);
+        System.out.println("Password: "+pwd);
+        System.out.println("Tipo: "+tipo);
+        System.out.println("ID: "+id);
     }
     
 }
