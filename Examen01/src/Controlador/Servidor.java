@@ -47,7 +47,7 @@ public class Servidor {
         }
 
     }
-    
+    /////*****///
     public void baja(Object objeto){
        boolean encontrado=false;
         switch(tipoClase){
