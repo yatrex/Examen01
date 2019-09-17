@@ -527,7 +527,7 @@ public class Cliente {
                     hora = Integer.parseInt(br1.readLine());
                     System.out.println("Especifique los minutos de apertura: "); 
                     minutos = Integer.parseInt(br1.readLine()); 
-                    System.out.println(hora+":"+minutos);
+                    //System.out.println(hora+":"+minutos);
                     cortina.set_HoraAper(hora, minutos);                    
                     System.out.println("Especifique la Hora de cierre: "); 
                     hora = Integer.parseInt(br1.readLine());

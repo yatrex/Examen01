@@ -53,8 +53,9 @@ public class Irrigador implements Serializable {
     }
 
     public void set_HoraRiego(int horas, int minutos) {
-        this.horaRiego.horas = horas;
-        this.horaRiego.minutos = minutos;
+        this.horaRiego = new Time(horas, minutos);
+       // this.horaRiego.horas = horas;
+       // this.horaRiego.minutos = minutos;
     }
 
     public int get_TempRiego() {

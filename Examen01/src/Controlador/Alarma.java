@@ -54,15 +54,17 @@ public class Alarma implements Serializable {
         return this.horaInicio.get_Time();
     }
     public void set_horaInicio(int horas,int minutos){
-        this.horaInicio.horas=horas;
-        this.horaInicio.minutos=minutos;
+        this.horaInicio = new Time(horas,minutos);
+      //  this.horaInicio.horas=horas;
+      //  this.horaInicio.minutos=minutos;
     }
     public Time get_horaTermino(){
         return this.horaTermino.get_Time();
     }
     public void set_horaTermino(int horas,int minutos){
-        this.horaTermino.horas=horas;
-        this.horaTermino.minutos=minutos;
+        this.horaTermino = new Time(horas,minutos);
+     //   this.horaTermino.horas=horas;
+     //   this.horaTermino.minutos=minutos;
     }
     public boolean esta_prendido(){
         return this.estado;

@@ -65,8 +65,9 @@ public class DisMascota implements Serializable {
     }
 
     public void set_HoraDes(int horas, int minutos) {
-        this.horaDes.horas = horas;
-        this.horaDes.minutos = minutos;
+        this.horaDes= new Time(horas,minutos);
+       // this.horaDes.horas = horas;
+       // this.horaDes.minutos = minutos;
     }
 
     public Time get_HoraCom() {
@@ -74,8 +75,9 @@ public class DisMascota implements Serializable {
     }
 
     public void set_HoraCom(int horas, int minutos) {
-        this.horaCom.horas = horas;
-        this.horaCom.minutos = minutos;
+        this.horaCom = new Time(horas,minutos);
+    //    this.horaCom.horas = horas;
+    //    this.horaCom.minutos = minutos;
     }
 
     public Time get_HoraCena() {
@@ -83,8 +85,9 @@ public class DisMascota implements Serializable {
     }
 
     public void set_HoraCena(int horas, int minutos) {
-        this.horaCena.horas = horas;
-        this.horaCena.minutos = minutos;
+        this.horaCena = new Time(horas,minutos);
+    //    this.horaCena.horas = horas;
+    //    this.horaCena.minutos = minutos;
     }
 
     public double get_CantDes() {
