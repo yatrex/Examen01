@@ -77,6 +77,7 @@ public class Luminaria implements Serializable{
     }
     
     public void display(){
+        System.out.println("ID: "+id);
         System.out.println(ubicacion);
         System.out.println(intensidad);
         System.out.println(estado);

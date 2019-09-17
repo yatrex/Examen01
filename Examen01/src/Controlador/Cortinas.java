@@ -18,7 +18,11 @@ public class Cortinas implements Serializable{
     private int posicion;//Permite abierta,semicerrada,semiabierta,cerrada.
     private Time horaAper;
     private Time horaCierre;
-     public boolean igual(Object o) {
+    //private int horaA;
+    //private int minA;
+    //private int horaC;
+    //private int minC;
+    public boolean igual(Object o) {
             if (this == o) {
                 return true;
             }
@@ -98,7 +102,11 @@ public class Cortinas implements Serializable{
       return  this.horaAper.get_Time();
     }
      public void set_HoraAper(int horas,int minutos){
-        this.horaAper.horas=horas;
+         //this.horaA=horas;
+         //this.minA=minutos;
+       //  this.horaAper=horas;
+     //   this.minAper=minutos;
+        this.horaAper.horas =horas;
         this.horaAper.minutos=minutos;
     }
       public Time get_HoraCierre(){
@@ -107,11 +115,14 @@ public class Cortinas implements Serializable{
      public void set_HoraCierre(int horas,int minutos){
         this.horaCierre.horas=horas;
         this.horaCierre.minutos=minutos;
+       // this.horaC=horas;
+        //this.minC=minutos;
     }
      
      public void display(){
-         System.out.println(ubicacion);
-         System.out.println(posicion);
+         System.out.println("ID: "+id);
+         System.out.println("Ubicación: "+ubicacion);
+         System.out.println("Posición: "+posicion);
          this.horaAper.display_Time();
          this.horaCierre.display_Time();
      }

@@ -151,24 +151,43 @@ public class Cliente {
                 System.out.println("Acceso Denegado");
                 System.out.println("No tienes permisos para hacer eso");
 
-            } else {
+            } 
+            else {
                 System.out.println("Acceso Concedido");
                 Object objeto = this.escribir_objeto(tipoClase);//   Object objeto = Cliente.escribir_objeto(tipoClase);
+                System.out.println("Enviando objeto");
                 oos.writeObject(objeto);
-                
-                boolean usuarioAgregado= false;
-                usuarioAgregado = dis.readBoolean();
-                if(usuarioAgregado){
-                System.out.println("Usuario agregado correctamente");
-                
-                /******************************************************                               ***************************************************************************************************/
-                this.lu = (ListaUsuarios) ois.readObject(); //actualizamos lista de usuarios
-                System.out.println("Ahora hay: " + this.lu.get_Cantidad()+" usuarios");
-                }
-                
+                System.out.println("Objeto enviado");
+               if(tipoClase==0){ 
+                    boolean usuarioAgregado= false;
+                    usuarioAgregado = dis.readBoolean();
+                    if(usuarioAgregado){
+                        System.out.println("Usuario agregado correctamente");
+                        /******************************************************                               ***************************************************************************************************/
+                        this.lu = (ListaUsuarios) ois.readObject(); //actualizamos lista de usuarios
+                        System.out.println("Ahora hay: " + this.lu.get_Cantidad()+" usuarios");
+                    }
+                    else{
+                        System.out.println("Error al agregar usuario");
+                    }
+               }
+               else{
+                   System.out.println("Esperando eco...");
+                    boolean objetoAgregado= false;
+                    objetoAgregado = dis.readBoolean();
+                    if(objetoAgregado){
+                        System.out.println("Objeto agregado con exito");
+                        this.lo = (ListaObjetos[]) ois.readObject(); //actualizamos lista de objetos
+                        System.out.println("Lista de objetos actualizada");
+                    }
+                    else{
+                        System.out.println("Error al agregar usuario");
+                    }
+                    
+               }
                 
             }
-
+            return;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -350,7 +369,7 @@ public class Cliente {
             } else {
                 dos.writeInt(this.idObjeto);
                 boolean si_encontrado = dis.readBoolean();
-                System.out.println(si_encontrado);
+                System.out.println("Encontrado: "+si_encontrado);
                 if (si_encontrado) {
                     Object nuevo = ois.readObject();
                     Cliente.get_objeto(tipoClase, nuevo);
@@ -455,16 +474,10 @@ public class Cliente {
     
     public Object agregarUsuario(Usuario u) throws IOException{
             BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("Escriba el nombre de usuario:");
-            
-            u.set_usr(br1.readLine());          
-            
-           
-            System.out.println("Escriba el nombre completo:");
-            
-            u.set_Nombre(br1.readLine());
-                
-            
+            System.out.println("Escriba el nombre de usuario:");            
+            u.set_usr(br1.readLine());            
+            System.out.println("Escriba el nombre completo:");           
+            u.set_Nombre(br1.readLine());           
             System.out.println("Escriba la contraseña:");
             u.set_Password(br1.readLine());//("predeterminado");//(br1.readLine());
             System.out.println("¿Establecer como administrador?: (S/N)");
@@ -482,80 +495,160 @@ public class Cliente {
 
   public Object escribir_objeto(int tipoClase) {//  public static Object escribir_objeto(int tipoClase) {
         Object objeto = null;
+        BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
+        int id=0;  
+        int hora=0,minutos=0;
+        String sino;
         try {
             switch (tipoClase) {
                 case 0://Usuario
                     System.out.println("Añadir usuario");
-                    Usuario u = new Usuario();
+                    Usuario u = new Usuario();                   
+                    return agregarUsuario(u);
                     
-                   // u.set_Nombre("Nuevo nombre");
-                   // u.set_usr("wholecharlygold");
-                   // u.set_Password("Predeterminado");
-                   // u.set_Admin(false);
-                   // u.set_ID(100);
-                   
-                      return agregarUsuario(u);
-                    //return u;
                 case 1:
+                    System.out.println("Añadir Refrigerador");
                     Refrigerador refri = new Refrigerador();
-                    refri.set_TemCentro(5);
-                    refri.set_TemCharola(5);
-                    refri.set_TemFrigo(0);
-                    refri.set_ID(100);
-
+                    System.out.println("Especifique la temperatura central: ");                   
+                    refri.set_TemCentro(Double.parseDouble(br1.readLine()));
+                    System.out.println("Especifique la temperatura de la charola: ");
+                    refri.set_TemCharola(Double.parseDouble(br1.readLine()));
+                    System.out.println("Especifique la temperatura del frigorifico: ");
+                    refri.set_TemFrigo(Double.parseDouble(br1.readLine()));   
+                    id = lo[0].get_Objetos().size()+1;
+                    refri.set_ID(id);                    
+                    System.out.println("ID asignado: "+id);
                     return refri;
 
                 case 2:
+                    System.out.println("Añadir Cortinas");
                     Cortinas cortina = new Cortinas();
-                    cortina.set_HoraAper(10, 10);
-                    cortina.set_HoraCierre(10, 10);
+                    System.out.println("Especifique la Hora de apertura: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de apertura: "); 
+                    minutos = Integer.parseInt(br1.readLine()); 
+                    System.out.println(hora+":"+minutos);
+                    cortina.set_HoraAper(hora, minutos);                    
+                    System.out.println("Especifique la Hora de cierre: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de cierre: "); 
+                    minutos = Integer.parseInt(br1.readLine());                    
+                    cortina.set_HoraCierre(hora, minutos);                    
                     cortina.set_PosicionAbierta();//.set_PosicionCerrada,.set_Posicion_Semiabierta,.set_Posicion_Semicerrada
-                    cortina.set_Ubicacion("Nueva Ubicacion");
-                    cortina.set_ID(100);
-
+                    System.out.println("Especifique la ubicación: "); 
+                    cortina.set_Ubicacion(br1.readLine());
+                    id = lo[1].get_Objetos().size()+1;                    
+                    cortina.set_ID(id);
                     return cortina;
+                    
                 case 3:
+                    System.out.println("Añadir Termostato");
                     Termostato termostato = new Termostato();
-                    termostato.set_Temperatura(30);
-                    termostato.set_ID(100);
-
+                    System.out.println("Especifique la temperatura: ");
+                    termostato.set_Temperatura(Integer.parseInt(br1.readLine()));
+                    id = lo[2].get_Objetos().size()+1;                   
+                    termostato.set_ID(id);
                     return termostato;
+                    
                 case 4:
+                    System.out.println("Añadir Dispensador");
                     DisMascota dismascota = new DisMascota();
-                    dismascota.set_CantCena(200);
-                    dismascota.set_CantCom(300);
-                    dismascota.set_CantDes(400);
-                    dismascota.set_HoraCena(10, 10);
-                    dismascota.set_HoraCom(20, 20);
-                    dismascota.set_HoraDes(30, 30);
-                    dismascota.set_ID(100);
+                    System.out.println("Especifique la cantidad de cena (gramos): ");
+                    dismascota.set_CantCena(Integer.parseInt(br1.readLine()));
+                    System.out.println("Especifique la cantidad de comida (gramos): ");
+                    dismascota.set_CantCom(Integer.parseInt(br1.readLine()));
+                    System.out.println("Especifique la cantidad de desayuno (gramos): ");
+                    dismascota.set_CantDes(Integer.parseInt(br1.readLine()));
+                    System.out.println("Especifique la Hora de cena: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de cena: "); 
+                    minutos = Integer.parseInt(br1.readLine());                   
+                    dismascota.set_HoraCena(hora, minutos);
+                    System.out.println("Especifique la Hora de comida: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de comida: "); 
+                    minutos = Integer.parseInt(br1.readLine());  
+                    dismascota.set_HoraCom(hora, minutos);
+                    System.out.println("Especifique la Hora de desayuno: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de desayuno: "); 
+                    minutos = Integer.parseInt(br1.readLine());  
+                    dismascota.set_HoraDes(hora, minutos);
+                    id = lo[3].get_Objetos().size()+1;  
+                    dismascota.set_ID(id);
 
                     return dismascota;
                 case 5:
+                    System.out.println("Añadir Irrigador");
                     Irrigador irrigador = new Irrigador();
-                    irrigador.set_HoraRiego(10, 10);
-                    irrigador.set_TempRiego(10);
-                    irrigador.set_ID(100);
+                    System.out.println("Especifique la Hora de riego: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de riego: "); 
+                    minutos = Integer.parseInt(br1.readLine());  
+                    irrigador.set_HoraRiego(hora, minutos);
+                    System.out.println("Especifique la temperatura: ");
+                    irrigador.set_TempRiego(Integer.parseInt(br1.readLine()));
+                    id = lo[4].get_Objetos().size()+1; 
+                    irrigador.set_ID(id);
                     return irrigador;
                 case 6:
+                    System.out.println("Añadir Alarma");
                     Alarma alarma = new Alarma(null, null, true);
-                    alarma.set_estado(true);
-                    alarma.set_horaInicio(10, 10);
-                    alarma.set_horaTermino(20, 20);
-                    alarma.set_ID(100);
+                    System.out.println("¿Activar alarma?: ");
+                    sino=br1.readLine();
+                    if(sino.equals("S")||sino.equals("s")){
+                        alarma.set_estado(true);  
+                    }
+                    else{
+                        alarma.set_estado(false); 
+                    }
+                    System.out.println("Especifique la Hora de inicio: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de inicio: "); 
+                    minutos = Integer.parseInt(br1.readLine());                     
+                    alarma.set_horaInicio(hora, minutos);                    
+                    System.out.println("Especifique la Hora de termino: "); 
+                    hora = Integer.parseInt(br1.readLine());
+                    System.out.println("Especifique los minutos de termino: "); 
+                    minutos = Integer.parseInt(br1.readLine()); 
+                    alarma.set_horaTermino(hora, minutos);
+                    id = lo[5].get_Objetos().size()+1; 
+                    alarma.set_ID(id);
                     return alarma;
                 case 7:
+                    System.out.println("Añadir Lampara");
                     Lampara lampara = new Lampara(null, true);
-                    lampara.set_Ubicacion(null);
-                    lampara.set_estado(true);
-                    lampara.set_ID(100);
+                    System.out.println("Especifique la ubicación: "); 
+                    lampara.set_Ubicacion(br1.readLine());
+                    
+                    System.out.println("¿Activar lampara?: ");
+                    sino=br1.readLine();
+                    if(sino.equals("S")||sino.equals("s")){
+                        lampara.set_estado(true);  
+                    }
+                    else{
+                        lampara.set_estado(false); 
+                    }
+                    id = lo[6].get_Objetos().size()+1; 
+                    lampara.set_ID(id);
                     return lampara;
                 case 8:
+                    System.out.println("Añadir Luminaria");
                     Luminaria luminaria = new Luminaria(null, 0, true);
-                    luminaria.set_Intensidad(20);
-                    luminaria.set_Ubicacion("nueva luminaria");
-                    luminaria.set_estado(true);
-                    luminaria.set_ID(100);
+                    System.out.println("Especifique la intensidad: "); 
+                    luminaria.set_Intensidad(Integer.parseInt(br1.readLine()));
+                    System.out.println("Especifique la ubicación: "); 
+                    luminaria.set_Ubicacion(br1.readLine());
+                    System.out.println("¿Activar luminaria?: ");
+                    sino=br1.readLine();
+                    if(sino.equals("S")||sino.equals("s")){
+                        luminaria.set_estado(true);  
+                    }
+                    else{
+                        luminaria.set_estado(false); 
+                    }
+                    id = lo[7].get_Objetos().size()+1; 
+                    luminaria.set_ID(id);
                     return luminaria;
                 default:
                     System.out.println("TipoClase no identificado");

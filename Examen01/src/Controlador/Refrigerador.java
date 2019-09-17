@@ -85,9 +85,10 @@ public class Refrigerador implements Serializable {
     }
 
     public void display() {
-        System.out.println(temFrigo);
-        System.out.println(temCentro);
-        System.out.println(temCharola);
+        System.out.println("ID: "+id);
+        System.out.println("Frigorifico: "+temFrigo+"°");
+        System.out.println("Centro: "+temCentro+"°");
+        System.out.println("Charola: "+temCharola+"°");
     }
     
         public boolean igual(Object o) {

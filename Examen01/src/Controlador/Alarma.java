@@ -71,6 +71,7 @@ public class Alarma implements Serializable {
         this.estado=estado;
     }
     public void display(){
+        System.out.println("ID: "+id);
         this.horaInicio.display_Time();
         this.horaTermino.display_Time();
         

@@ -67,6 +67,7 @@ public class Lampara implements Serializable {
     }
 
     public void display() {
+        System.out.println("ID: "+id);
         System.out.println(ubicacion);
         System.out.println(estado);
     }

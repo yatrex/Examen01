@@ -33,17 +33,16 @@ public class Servidor {
             this.lu = (ListaUsuarios) Servidor.ReadObjectFromFile("ListaUsuarios");
             this.lo = (ListaObjetos[]) Servidor.ReadObjectFromFile("ListaObjetos");
             this.usuarios = lu.get_ListaUsuarios();
+            
+            System.out.println("**************USUARIOS**************");
             for(int i=0;i<usuarios.size();i++){
-                usuarios.get(i).display();
+                usuarios.get(i).display();  //imprime usuarios
             }
+            
+            System.out.println("**************OBJETOS**************");
+            imprimeObjetos();
            //  LinkedList<ListaObjetos> objetos;
-            for(int j=0;j<lo.length;j++){
-                for(int k=0;k<lo[j].get_Cantidad();k++){
-                    lo[j].get_Objetos().get(k);
-                }
-                
-                
-            }
+          
             
             
             this.s = new ServerSocket(9000);
@@ -575,10 +574,16 @@ public class Servidor {
                         }
                        
                         objeto = Servidor.get_objeto(tipoClase, ois);
-
+                        System.out.println("Objeto recivido");
                         lo[tipoClase - 1].get_Objetos().add(objeto);
-                        System.out.println(objeto);
-
+                        System.out.println("Objeto agregado a lista");
+                        System.out.println(objeto);//*****************************************************
+                        dos.writeBoolean(true); //bandera de objeto agregado
+                        dos.flush();
+                        this.oos.writeObject(this.lo); //enviando lista de objetos
+                        this.oos.flush();
+                        System.out.println("Lista de objetos enviada...");
+                        
                         break;
                     case 2://baja
                         System.out.println("*Baja*");
@@ -694,7 +699,7 @@ public class Servidor {
                             }
 
                         } else {
-                            array = lo[tipoClase - 1].get_Objetos();
+                            array = lo[tipoClase - 1].get_Objetos(); //retornamos una lista de objetos (linked list)
 
                             this.get_consulta(array, idObjeto);
                             return;
@@ -719,6 +724,101 @@ public class Servidor {
         this.cl.close();
         this.s.close();
     }
+    
+    
+    ///*********************************************************************************************************************
+    
+    public void imprimeObjetos(){
+      
+        try {
+            
+            for(int i=0; i<this.lo.length;i++){
+                switch (i+1) {
+                    case 1:
+                        System.out.println("Refrigeradores: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {   //for(Object o : aux) { this.lo[i].get_Objetos()
+                            Refrigerador refri = (Refrigerador) o;
+                            refri.display();
+                            System.out.println();
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Cortinas: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {
+                            Cortinas cortina = (Cortinas) o;
+                            cortina.display();
+                            System.out.println();
+                        }                    
+                        break;
+                    case 3:
+                        System.out.println("Termostatos: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {
+                            Termostato termostato = (Termostato) o;
+                            termostato.display();
+                            System.out.println();
+                        }                   
+                        break;
+                    case 4:
+                        System.out.println("Dispensadores Mascota: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {
+                            DisMascota disMascota = (DisMascota) o;
+                            disMascota.display();
+                            System.out.println();
+                        }                   
+                        break;
+                    case 5:
+                        System.out.println("Irrigadores: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {
+                            Irrigador irrigador = (Irrigador) o;
+                            irrigador.display();
+                            System.out.println();
+                        }                  
+                        break;
+                    case 6:
+                        System.out.println("Alarmas: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {
+                            Alarma alarma = (Alarma) o;
+                            alarma.display();
+                            System.out.println();
+                        }                    
+                        break;
+                    case 7:
+                        System.out.println("Lamparas: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {
+                            Lampara lampara = (Lampara) o;
+                            lampara.display();
+                            System.out.println();
+                        }                   
+                        break;
+                    case 8:
+                        System.out.println("Luminarias: "+this.lo[i].get_Objetos().size());
+                        for(Object o : this.lo[i].get_Objetos()) {
+                            Luminaria luminaria = (Luminaria) o;
+                            luminaria.display();
+                            System.out.println();
+                        }                    
+                        break;
+                    default:                   
+                        System.out.println("TipoClase no identificado en consulta");
+                        break;
+                }
+            }//for    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return;
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     public static void main(String[] args) {
         try {
@@ -751,3 +851,7 @@ public class Servidor {
     }
 
 }
+
+
+
+

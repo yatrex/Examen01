@@ -65,6 +65,7 @@ public class Termostato implements Serializable {
     }
 
     public void display() {
+        System.out.println("ID: "+id);
         System.out.println(temperatura);
     }
 

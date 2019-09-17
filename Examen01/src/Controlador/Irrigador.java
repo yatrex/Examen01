@@ -66,6 +66,7 @@ public class Irrigador implements Serializable {
     }
 
     public void display() {
+        System.out.println("ID: "+id);
         this.horaRiego.display_Time();
         System.out.println(tempRiego);
     }

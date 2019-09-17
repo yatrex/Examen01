@@ -112,6 +112,7 @@ public class DisMascota implements Serializable {
     }
 
     public void display() {
+        System.out.println("ID: "+id);
         this.horaDes.display_Time();
         this.horaCom.display_Time();
         this.horaCena.display_Time();
